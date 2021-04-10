@@ -27,46 +27,114 @@ def index():
 def admin():
     return render_template("admin.html")
 
-@app.route("/admin/login",methods = ["POST","GET"])
-def adminLogin():
 
-    user = None
-    admin_list = []
+@app.route("/librarian")
+def librarian():
+    return render_template("librarian.html")
+
+
+@app.route("/login-librarian",methods = ["POST","GET"])
+def login_librarian():
+    librarian_list = []
+
+    # LIBRARIAN DATA
+
+    sql_code_librarian = "SELECT * FROM librarian"
+    db_cursor.execute(sql_code_librarian)
+    result_librarian = db_cursor.fetchall()
+
+    for res in result_librarian:
+        lista = list(res)
+        librarian_list.append(lista)
 
     if request.method == "POST":
         user = request.form["username"]
         password = request.form["password"]
-        session["user"] = user
-        print(user + " " + password)
-        
-    # I WILL ADD THIS LATER
 
-        sql_code = "SELECT * FROM admin WHERE adminName = '{}'AND adminPassword = '{}'".format(user,password)
+        if(len(librarian_list) == 0):
+            print("nema bibliotekara u bazi")
 
-        db_cursor.execute(sql_code)
-        result = db_cursor.fetchall()
+        elif(len(librarian_list) > 0):
 
-        for res in result:
-            admin_list = list(res)
+           for i in range(len(librarian_list)):
+                if(user == librarian_list[i][1] and password == librarian_list[i][2]):
+                    print("bibliotekar konektovan")
+                    session["user"] = user
+                    is_librarian = True
+                    is_admin = False
+                    return redirect(url_for("librarian"))
 
-
-        return render_template("admin.html",username = user)
-    
-    else:
+    elif request.method == "GET":
         if("user" in session):
             user = session["user"]
-            print("user u sessionu je:" + session["user"])
+            print("user u sessionu je librarian:" + session["user"])
+            return redirect(url_for("librarian"))
+
+        else:
+            print("user nije u sessionu")
+    return render_template("index_login.html")
+
+
+
+
+@app.route("/login/admin",methods = ["POST","GET"])
+def login_admin():
+
+    user = None
+    admin_list = []
+    
+    # ADMIN DATA
+    sql_code_admin = "SELECT * FROM admins"
+    db_cursor.execute(sql_code_admin)
+    result_admin = db_cursor.fetchall()
+
+    for res in result_admin:
+        admin_list = list(res)
+    
+
+    if request.method == "POST":
+        user = request.form["username"]
+        password = request.form["password"]
+        
+
+    # ZA ADMINA 
+    
+        if(len(admin_list) == 0):
+            print("nema admina u bazi")
+
+        elif(user == admin_list[1] and password == admin_list[2]):
+            print("admin konektovan")
+            session["user"] = user
+            return redirect(url_for("index"))
+
+
+                    
+    elif request.method == "GET":
+        if("user" in session):
+            user = session["user"]
+            print("user u sessionu je admin:" + session["user"])
             return redirect(url_for("admin"))
 
-        return render_template("index_admin_login.html")
+        else:
+            print("user nije u sessionu")
+        return render_template("index_login.html")
 
     
 
 
-@app.route("/admin/logout")
-def adminLogout():
+@app.route("/logout-admin")
+def logout_admin():
     if("user" in session):
         session.pop("user",None)
-        print("user vise nije u sessionu")
+        print("user admin vise nije u sessionu")
        
-    return redirect(url_for("adminLogin"))
+    return redirect(url_for("login_admin"))
+
+
+@app.route("/logout-librarian")
+def logout_librarian():
+    if("user" in session):
+        session.pop("user",None)
+        print("user librarian vise nije u sessionu")
+       
+    return redirect(url_for("login_librarian"))
