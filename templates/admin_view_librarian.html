@@ -15,22 +15,20 @@
     text-align: center;
 }
 
-.center-table{
-    text-align: center;
-}
+
 .table {
-  font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 90%;
-  margin: auto;
+  margin-left: 50px;
 }
 
-td, th {
+
+table td,th,tr{
+  width: 70px;
   border: 1px solid #291e1e;
-  text-align: center;
-  padding: 8px;
+  /* text-align: center; */
+  /* padding: 8px; */
 }
-
 
 
 tr:nth-child(even) {
@@ -42,7 +40,7 @@ tr:nth-child(even) {
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Library System</a>
+          <a class="navbar-brand" href="{{url_for('index')}}">Library System</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -61,8 +59,8 @@ tr:nth-child(even) {
     
 
 
-<div class="center-table">
-    <h2>List of librarians</h2>
+
+    <h2 style="text-align: center;">List of librarians</h2>
     {% for elem in lista_librarian %}
     <table class="table">
         
@@ -83,7 +81,7 @@ tr:nth-child(even) {
     </table>
             <!-- <li>ID: {{elem[0]}} USERNAME: {{elem[1]}} PASSWORD: {{elem[2]}} </li> -->
     {% endfor %}
-</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 </body>

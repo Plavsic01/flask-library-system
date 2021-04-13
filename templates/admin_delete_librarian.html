@@ -18,6 +18,22 @@
 .center-table{
     text-align: center;
 }
+
+.center {
+    margin: auto;
+    width: 50%;
+    border: 3px solid black;
+    padding: 10px;
+  }
+
+form{
+    text-align: center;
+}
+
+h1{
+    text-align: center;
+    text-transform: uppercase;
+}
 </style>
 
 
@@ -53,7 +69,7 @@
     </form>
 
         {% if msg %}
-            <h4>Librarian by ID {{id}} was deleted.</h4>
+            <h4 style="text-align: center;margin-top:20px;">Librarian by ID {{id}} was deleted.</h4>
         {% endif %}
    
 </div>
