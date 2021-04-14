@@ -279,3 +279,6 @@ def logout_librarian():
         print("user librarian vise nije u sessionu")
        
     return redirect(url_for("login_librarian"))
+
+
+# todo: add issue books, add view issued books and return books 
