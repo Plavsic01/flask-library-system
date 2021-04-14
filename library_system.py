@@ -13,6 +13,16 @@ def select_all(prazna_lista):
 
         return prazna_lista
 
+def select_books(prazna_lista):
+        sql_code_librarian = "SELECT * FROM books"
+        db_cursor.execute(sql_code_librarian)
+        result_librarian = db_cursor.fetchall()
+
+        for res in result_librarian:
+            lista = list(res)
+            prazna_lista.append(lista)
+
+        return prazna_lista
 
 def select_admin(prazna_lista):
         sql_code_librarian = "SELECT * FROM admins"
@@ -120,6 +130,38 @@ def login_librarian():
 
 
 # librarian functions come here
+
+@app.route("/librarian/add",methods=["POST","GET"])
+def add_books():
+    if request.method == "POST":
+        name = request.form["name"]
+        author = request.form["author"]
+
+        sql_code = "INSERT INTO books (bookname,bookauthor) VALUES ('{}','{}')".format(name,author)
+        db_cursor.execute(sql_code)
+        db.commit()
+
+    return render_template("librarian_add_books.html")
+
+
+@app.route("/librarian/view")
+def view_books():
+
+    if("user" in session):
+        lista_knjiga = []
+        lista = select_books(lista_knjiga)
+
+        return render_template("librarian_view_books.html",lista_knjiga = lista)
+
+    else:
+        return redirect(url_for("login_librarian"))
+
+
+# ovo treba zavrsiti
+@app.route("/librarian/issue/book")
+def issue_books():
+    return render_template("librarian_issue_books.html")
+
 
 
 @app.route("/admin/login",methods = ["POST","GET"])
